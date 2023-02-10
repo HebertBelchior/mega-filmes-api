@@ -1,4 +1,4 @@
-using MegaFilmes.Api.Data;
+using MegaFilmes.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

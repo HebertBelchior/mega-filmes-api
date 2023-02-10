@@ -1,8 +1,8 @@
-﻿using MegaFilmes.Api.Entities;
+﻿using MegaFilmes.Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace MegaFilmes.Api.Data.Maps;
+namespace MegaFilmes.Infra.Mappings;
 
 public class AvaliacaoMap : IEntityTypeConfiguration<Avaliacao>
 {
@@ -23,7 +23,7 @@ public class AvaliacaoMap : IEntityTypeConfiguration<Avaliacao>
         builder.Property(x => x.Comentario)
             .HasColumnName("comentario")
             .IsRequired();
-        
+
         builder.Property(x => x.FilmeId)
             .HasColumnName("filme_id")
             .IsRequired();

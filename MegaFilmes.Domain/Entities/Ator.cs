@@ -1,4 +1,4 @@
-﻿namespace MegaFilmes.Api.Entities;
+﻿namespace MegaFilmes.Domain.Entities;
 
 public class Ator
 {

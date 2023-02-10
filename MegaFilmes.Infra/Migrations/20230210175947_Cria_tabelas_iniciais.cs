@@ -2,9 +2,9 @@
 
 #nullable disable
 
-namespace MegaFilmes.Api.Migrations
+namespace MegaFilmes.Infra.Migrations
 {
-    public partial class CriaTabelasIniciais : Migration
+    public partial class Cria_tabelas_iniciais : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

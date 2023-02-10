@@ -1,8 +1,8 @@
-﻿using MegaFilmes.Api.Entities;
+﻿using MegaFilmes.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MegaFilmes.Api.Data.Maps;
+namespace MegaFilmes.Infra.Mappings;
 
 public class FilmeMap : IEntityTypeConfiguration<Filme>
 {
