@@ -32,7 +32,7 @@ public class FilmeRepository : IFilmeRepository
         return await _db.Filmes.ToListAsync();
     }
 
-    public async Task<IEnumerable<Filme?>> GetByDirector(string diretor)
+    public async Task<List<Filme>> GetByDirector(string diretor)
     {
         return await _db.Filmes
             .Where(x => EF.Functions.Like(x.Diretor, $"%{diretor}%"))
@@ -49,7 +49,7 @@ public class FilmeRepository : IFilmeRepository
         return await _db.Filmes.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<Filme?>> GetByName(string nome)
+    public async Task<List<Filme>> GetByName(string nome)
     {
         return await _db.Filmes
             .Where(x => EF.Functions.Like(x.Nome, $"%{nome}%"))

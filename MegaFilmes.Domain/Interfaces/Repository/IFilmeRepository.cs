@@ -10,6 +10,6 @@ public interface IFilmeRepository
     Task<Filme> UpdateAsync(Filme filme);
     Task DeleteAsync(Filme filme);
     Task<Filme?> GetByGender(string genero);
-    Task<IEnumerable<Filme?>> GetByDirector(string diretor);
-    Task<IEnumerable<Filme?>> GetByName(string nome);
+    Task<List<Filme>> GetByDirector(string diretor);
+    Task<List<Filme>> GetByName(string nome);
 }
