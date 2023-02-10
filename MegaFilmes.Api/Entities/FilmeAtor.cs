@@ -1,6 +1,6 @@
 ﻿namespace MegaFilmes.Api.Entities;
 
-public class FilmesAtores
+public class FilmeAtor
 {
     public int Id { get; set; }
     public int FilmeId { get; set; }
