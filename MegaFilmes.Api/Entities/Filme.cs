@@ -9,5 +9,5 @@ public class Filme
     public string Diretor { get; set; }
     public string Genero { get; set; }
     public ICollection<Avaliacao> Avaliacao { get; set; }
-    public ICollection<FilmesAtores> FilmesAtores { get; set; }
+    public ICollection<FilmeAtor> FilmesAtores { get; set; }
 }

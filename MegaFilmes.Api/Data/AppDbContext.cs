@@ -10,7 +10,7 @@ public class AppDbContext : DbContext
 	public DbSet<Filme> Filmes { get; set; }
 	public DbSet<Avaliacao> Avaliacoes { get; set; }
 	public DbSet<Ator> Atores { get; set; }
-	public DbSet<FilmesAtores> FilmesAtores { get; set; }
+	public DbSet<FilmeAtor> FilmesAtores { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
