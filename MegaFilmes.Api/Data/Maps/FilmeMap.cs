@@ -36,6 +36,4 @@ public class FilmeMap : IEntityTypeConfiguration<Filme>
             .HasColumnName("genero")
             .IsRequired();
     }
-
-
 }
