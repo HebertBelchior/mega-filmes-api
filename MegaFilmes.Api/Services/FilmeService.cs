@@ -24,6 +24,10 @@ public class FilmeService : IFilmeService
         if (resultado.IsValid)
             return ResultService.RequestError<ReadFilmeDto>("Informe um objeto válido", resultado);
 
+        var filmeExiste = await _filmeRepository.CheckMovieExists(filmeDto.Nome);
+        if (filmeExiste != null)
+            return ResultService.Fail<ReadFilmeDto>("Já existe um filme cadastrado com esse nome", 409);
+
         var filme =  _mapper.Map<Filme>(filmeDto);
         var data = await _filmeRepository.CreateAsync(filme);
         return ResultService.Ok(_mapper.Map<ReadFilmeDto>(data), 201);
