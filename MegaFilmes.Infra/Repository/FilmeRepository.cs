@@ -14,6 +14,11 @@ public class FilmeRepository : IFilmeRepository
         _db = db;
     }
 
+    public async Task<Filme?> CheckMovieExists(string nome)
+    {
+        return await _db.Filmes.FirstOrDefaultAsync(x => x.Nome == nome);
+    }
+
     public async Task<Filme> CreateAsync(Filme filme)
     {
         _db.Add(filme);
@@ -32,16 +37,18 @@ public class FilmeRepository : IFilmeRepository
         return await _db.Filmes.ToListAsync();
     }
 
-    public async Task<IEnumerable<Filme?>> GetByDirector(string diretor)
+    public async Task<ICollection<Filme>> GetByDirector(string diretor)
     {
         return await _db.Filmes
-            .Where(x => EF.Functions.Like(x.Diretor, $"%{diretor}%"))
+            .Where(x => x.Diretor.Contains(diretor))
             .ToListAsync();
     }
 
-    public async Task<Filme?> GetByGender(string genero)
+    public async Task<ICollection<Filme>> GetByGender(string genero)
     {
-        return await _db.Filmes.FirstOrDefaultAsync(x => x.Genero == genero);
+        return await _db.Filmes
+            .Where(x => x.Genero == genero)
+            .ToListAsync();
     }
 
     public async Task<Filme?> GetByIdAsync(int id)
@@ -49,10 +56,10 @@ public class FilmeRepository : IFilmeRepository
         return await _db.Filmes.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<Filme?>> GetByName(string nome)
+    public async Task<ICollection<Filme>> GetByName(string nome)
     {
         return await _db.Filmes
-            .Where(x => EF.Functions.Like(x.Nome, $"%{nome}%"))
+            .Where(x => x.Nome.Contains(nome))
             .ToListAsync();
     }
 
