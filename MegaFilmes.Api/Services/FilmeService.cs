@@ -21,7 +21,7 @@ public class FilmeService : IFilmeService
     public async Task<ResultService<ReadFilmeDto>> CreateAsync(CreateFilmeDto filmeDto)
     {
         var resultado = new CreateFilmeValidation().Validate(filmeDto);
-        if (resultado.IsValid)
+        if (!resultado.IsValid)
             return ResultService.RequestError<ReadFilmeDto>("Informe um objeto válido", resultado);
 
         var filmeExiste = await _filmeRepository.CheckMovieExists(filmeDto.Nome);
@@ -83,7 +83,7 @@ public class FilmeService : IFilmeService
     public async Task<ResultService<ReadFilmeDto>> UpdateAsync(int id, UpdateFilmeDto filmeDto)
     {
         var resultado = new UpdateFilmeValidation().Validate(filmeDto);
-        if (resultado.IsValid)
+        if (!resultado.IsValid)
             return ResultService.RequestError<ReadFilmeDto>("Informe um objeto válido", resultado);
 
         var filme = await _filmeRepository.GetByIdAsync(id);
