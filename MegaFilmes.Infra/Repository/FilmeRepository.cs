@@ -14,6 +14,11 @@ public class FilmeRepository : IFilmeRepository
         _db = db;
     }
 
+    public async Task<Filme?> CheckMovieExists(string nome)
+    {
+        return await _db.Filmes.FirstOrDefaultAsync(x => x.Nome == nome);
+    }
+
     public async Task<Filme> CreateAsync(Filme filme)
     {
         _db.Add(filme);

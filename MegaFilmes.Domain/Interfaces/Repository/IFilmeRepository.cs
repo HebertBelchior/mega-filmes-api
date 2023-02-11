@@ -12,4 +12,5 @@ public interface IFilmeRepository
     Task<ICollection<Filme>> GetByGender(string genero);
     Task<ICollection<Filme>> GetByDirector(string diretor);
     Task<ICollection<Filme>> GetByName(string nome);
+    Task<Filme?> CheckMovieExists(string nome);
 }
