@@ -1,5 +1,4 @@
 ﻿using MegaFilmes.Domain.Dtos.FilmeDto;
-using MegaFilmes.Domain.Entities;
 
 namespace MegaFilmes.Api.Services.Interfaces;
 

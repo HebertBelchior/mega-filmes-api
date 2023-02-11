@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MegaFilmes.Domain.Dtos.FilmeDto;
+﻿namespace MegaFilmes.Domain.Dtos.FilmeDto;
 
 public class CreateFilmeDto
 {
