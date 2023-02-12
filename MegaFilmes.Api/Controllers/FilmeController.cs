@@ -20,66 +20,67 @@ public class FilmeController : ControllerBase
     {
         var resultado = await _filmeService.CreateAsync(filmeDto);
         if (resultado.Success)
-            return Created("", resultado.Data);
+            return CreatedAtAction(nameof(GetByIdAsync), new {id = resultado.Data.Id}, resultado.Data);
         if (resultado.Status == 409)
-            return Conflict(new { resultado.Message, resultado.Errors });
+            return Conflict(new { resultado.Message});
         return BadRequest(new { resultado.Message, resultado.Errors });
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateAsync(UpdateFilmeDto filmeDto)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateAsync(int id, UpdateFilmeDto filmeDto)
     {
-        var resultado = await _filmeService.CreateAsync(filmeDto);
+        var resultado = await _filmeService.UpdateAsync(id, filmeDto);
         if (resultado.Success)
-            return Created("", resultado.Data);
+            return Ok(resultado.Data);
         if(resultado.Status == 404)
-            return Conflict(new {resultado.Message, resultado.Errors});
+            return NotFound(new {resultado.Message});
         return BadRequest(new { resultado.Message, resultado.Errors});
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         var resultado = await _filmeService.DeleteAsync(id);
-        if(resultado.Status == 404)
-            return Conflict(new {resultado.Message, resultado.Errors});
-        return BadRequest(new {resultado.Message, resultado.Errors});
+        if (resultado.Success)
+            return NoContent();
+        return NotFound(new { resultado.Message });
     }
 
-    [HttpGet("/Gender")]
-    public async Task<IActionResult> GetByGender(string nome)
+    [HttpGet("Genero")]
+    public async Task<IActionResult> GetByGender(string genero)
     {
-        var resultado = await _filmeService.GetByGender(nome);
-        return Ok(resultado);
+        var resultado = await _filmeService.GetByGender(genero);
+        return Ok(resultado.Data);
     }
 
-    [HttpGet("/Director")]
+    [HttpGet("Diretor")]
     public async Task<IActionResult> GetByDirector(string diretor)
     {
-        var resultado = await _filmeService.GetByGender(diretor);
-        return Ok(resultado);
+        var resultado = await _filmeService.GetByDirector(diretor);
+        return Ok(resultado.Data);
     }
 
-    [HttpGet("/Name")]
+    [HttpGet("Nome")]
     public async Task<IActionResult> GetByName(string nome)
     {
         var resultado = await _filmeService.GetByName(nome);
-        return Ok(resultado);
+        return Ok(resultado.Data);
     }
 
-    [HttpGet("/Films")]
+    [HttpGet]
     public async Task<IActionResult> GetAllAsync()
     {
         var resultado = await _filmeService.GetAllAsync();
-        return Ok(resultado);
+        return Ok(resultado.Data);
     }
 
-    [HttpGet("/Film")]
+    [HttpGet("{id}")]
+    [ActionName(nameof(GetByIdAsync))]
     public async Task<IActionResult> GetByIdAsync(int id)
     {
         var resultado = await _filmeService.GetByIdAsync(id);
-        if(resultado.Status == 404)
-            return Conflict(new { resultado.Message, resultado.Errors });
-        return BadRequest(new { resultado.Message, resultado.Errors });
+        if(resultado.Success)
+            return Ok(resultado.Data);
+        return NotFound(new { resultado.Message });
     }
 }
