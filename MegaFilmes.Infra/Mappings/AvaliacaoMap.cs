@@ -21,9 +21,8 @@ public class AvaliacaoMap : IEntityTypeConfiguration<Avaliacao>
             .IsRequired();
 
         builder.Property(x => x.Comentario)
-            .HasColumnName("comentario")
-            .IsRequired();
-
+            .HasColumnName("comentario");
+          
         builder.Property(x => x.FilmeId)
             .HasColumnName("filme_id")
             .IsRequired();

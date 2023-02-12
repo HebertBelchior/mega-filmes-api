@@ -27,9 +27,11 @@ builder.Services.AddEntityFrameworkSqlServer()
 
 // Repositories
 builder.Services.AddScoped<IFilmeRepository, FilmeRepository>();
+builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
 
 // Services
 builder.Services.AddScoped<IFilmeService, FilmeService>();
+builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
 
 // Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
