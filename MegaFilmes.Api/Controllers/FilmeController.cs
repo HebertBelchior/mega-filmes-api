@@ -27,9 +27,9 @@ public class FilmeController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateAsync(UpdateFilmeDto filmeDto)
+    public async Task<IActionResult> UpdateAsync(int id, UpdateFilmeDto filmeDto)
     {
-        var resultado = await _filmeService.CreateAsync(filmeDto);
+        var resultado = await _filmeService.UpdateAsync(id, filmeDto);
         if (resultado.Success)
             return Created("", resultado.Data);
         if(resultado.Status == 404)
@@ -47,16 +47,16 @@ public class FilmeController : ControllerBase
     }
 
     [HttpGet("/Gender")]
-    public async Task<IActionResult> GetByGender(string nome)
+    public async Task<IActionResult> GetByGender(string genero)
     {
-        var resultado = await _filmeService.GetByGender(nome);
+        var resultado = await _filmeService.GetByGender(genero);
         return Ok(resultado);
     }
 
     [HttpGet("/Director")]
     public async Task<IActionResult> GetByDirector(string diretor)
     {
-        var resultado = await _filmeService.GetByGender(diretor);
+        var resultado = await _filmeService.GetByDirector(diretor);
         return Ok(resultado);
     }
 
@@ -80,6 +80,6 @@ public class FilmeController : ControllerBase
         var resultado = await _filmeService.GetByIdAsync(id);
         if(resultado.Status == 404)
             return Conflict(new { resultado.Message, resultado.Errors });
-        return BadRequest(new { resultado.Message, resultado.Errors });
+        return Ok(resultado);
     }
 }
