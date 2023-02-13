@@ -30,11 +30,13 @@ public class FilmeAtorRepository : IFilmeAtorRepository
 
     public async Task<ICollection<FilmeAtor>> GetAllAsync()
     {
+        _db.FilmesAtores.Include(f => f.Filme).Include(fa => fa.Ator).ToList();
         return await _db.FilmesAtores.ToListAsync();
     }
 
     public async Task<FilmeAtor?> GetByIdAsync(int id)
     {
+        _db.FilmesAtores.Include(f => f.Ator).Include(fa => fa.Filme).FirstOrDefault(f => f.Id == id);
         return await _db.FilmesAtores.FirstOrDefaultAsync(x => x.Id == id);
     }
 

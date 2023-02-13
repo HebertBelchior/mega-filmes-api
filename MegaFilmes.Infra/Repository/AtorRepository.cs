@@ -29,16 +29,19 @@ public class AtorRepository : IAtorRepository
 
     public async Task<ICollection<Ator>> GetAllAsync()
     {
+        _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).ToList();
         return await _db.Atores.ToListAsync();
     }
 
     public async Task<Ator?> GetByIdAsync(int id)
     {
+        _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).FirstOrDefault(f => f.Id == id);
         return await _db.Atores.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IEnumerable<Ator?>> GetByName(string nome)
     {
+        _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).FirstOrDefault(f => f.Nome == nome);
         return await _db.Atores
         .Where(x => EF.Functions.Like(x.Nome, $"%{nome}%"))
         .ToListAsync();
