@@ -28,6 +28,8 @@ builder.Services.AddEntityFrameworkSqlServer()
 // Repositories
 builder.Services.AddScoped<IFilmeRepository, FilmeRepository>();
 builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
+builder.Services.AddScoped<IAtorRepository, AtorRepository>();
+builder.Services.AddScoped<IFilmeAtorRepository, FilmeAtorRepository>();
 
 // Services
 builder.Services.AddScoped<IFilmeService, FilmeService>();
