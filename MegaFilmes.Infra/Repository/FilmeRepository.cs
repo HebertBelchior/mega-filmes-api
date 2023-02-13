@@ -69,4 +69,15 @@ public class FilmeRepository : IFilmeRepository
         await _db.SaveChangesAsync();
         return filme;
     }
+
+    public async Task<double> GetAverageRatingsAsync(int id)
+    {
+        var filme = await _db.Filmes
+            .Include(f => f.Avaliacao)
+            .SingleOrDefaultAsync(f => f.Id == id);
+
+        var media = filme.Avaliacao.Average(a => a.Criterio);
+
+        return Math.Round(media, 1);
+    }
 }

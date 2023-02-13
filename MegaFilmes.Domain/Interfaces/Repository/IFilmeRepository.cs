@@ -13,4 +13,5 @@ public interface IFilmeRepository
     Task<ICollection<Filme>> GetByDirector(string diretor);
     Task<ICollection<Filme>> GetByName(string nome);
     Task<Filme?> CheckMovieExists(string nome);
+    Task<double> GetAverageRatingsAsync(int id);
 }
