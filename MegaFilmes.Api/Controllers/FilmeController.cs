@@ -1,5 +1,7 @@
-﻿using MegaFilmes.Api.Services.Interfaces;
+﻿using MegaFilmes.Api.Services;
+using MegaFilmes.Api.Services.Interfaces;
 using MegaFilmes.Domain.Dtos.FilmeDto;
+using MegaFilmes.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MegaFilmes.Api.Controllers;
@@ -46,24 +48,28 @@ public class FilmeController : ControllerBase
         return NotFound(new { resultado.Message });
     }
 
-    [HttpGet("Genero")]
-    public async Task<IActionResult> GetByGender(string genero)
+    [HttpGet("Search")]
+    public async Task<IActionResult> GetByFilterAsync(string? genero, string? diretor, string? nome)
     {
-        var resultado = await _filmeService.GetByGender(genero);
-        return Ok(resultado.Data);
-    }
+        ResultService<ICollection<ReadFilmeDto>> resultado = new();
 
-    [HttpGet("Diretor")]
-    public async Task<IActionResult> GetByDirector(string diretor)
-    {
-        var resultado = await _filmeService.GetByDirector(diretor);
-        return Ok(resultado.Data);
-    }
+        if (!string.IsNullOrWhiteSpace(genero))
+        {
+            resultado = await _filmeService.GetByGender(genero);
+        }
+        else if (!string.IsNullOrWhiteSpace(diretor))
+        {
+            resultado = await _filmeService.GetByDirector(diretor);
+        }
+        else if (!string.IsNullOrWhiteSpace(nome))
+        {
+            resultado = await _filmeService.GetByName(nome);
+        }
+        else
+        {
+            resultado = await _filmeService.GetAllAsync();
+        }
 
-    [HttpGet("Nome")]
-    public async Task<IActionResult> GetByName(string nome)
-    {
-        var resultado = await _filmeService.GetByName(nome);
         return Ok(resultado.Data);
     }
 
