@@ -34,6 +34,8 @@ builder.Services.AddScoped<IFilmeAtorRepository, FilmeAtorRepository>();
 // Services
 builder.Services.AddScoped<IFilmeService, FilmeService>();
 builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
+builder.Services.AddScoped<IAtorService, AtorService>();
+builder.Services.AddScoped<IFilmeAtorService, FilmeAtorService>();
 
 // Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
