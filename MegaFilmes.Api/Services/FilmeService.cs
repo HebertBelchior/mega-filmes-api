@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MegaFilmes.Api.Services.Interfaces;
+using MegaFilmes.Domain.Dtos;
 using MegaFilmes.Domain.Dtos.FilmeDto;
 using MegaFilmes.Domain.Entities;
 using MegaFilmes.Domain.Interfaces.Repository;
@@ -17,10 +18,10 @@ public class FilmeService : IFilmeService
         _filmeRepository = filmeRepository;
         _mapper = mapper;
     }
-    private async Task<ICollection<ReadFilmeDto>> GetFilmesWithAverageRatingsAsync(ICollection<Filme> filmes)
+    private async Task<PagedBaseResponse<ReadFilmeDto>> GetFilmesWithAverageRatingsAsync(PagedBaseResponse<Filme> filmes)
     {
-        var data = _mapper.Map<ICollection<ReadFilmeDto>>(filmes);
-        foreach (var filme in data)
+        var resultado = _mapper.Map<PagedBaseResponse<ReadFilmeDto>>(filmes);
+        foreach (var filme in resultado.Data)
         {
             try
             {
@@ -32,7 +33,7 @@ public class FilmeService : IFilmeService
                 filme.AvaliacaoMedia = 0;
             }
         }
-        return data;
+        return resultado;
     }
 
     public async Task<ResultService<ReadFilmeDto>> CreateAsync(CreateFilmeDto filmeDto)
@@ -87,13 +88,14 @@ public class FilmeService : IFilmeService
         return ResultService.Ok<ReadFilmeDto>(readFilmeDto, 204);
     }
 
-    public async Task<ResultService<ICollection<ReadFilmeDto>>> GetPagedAsync(FilmeFilterDto filmeFilterDto)
+    public async Task<ResultService<PagedBaseResponse<ReadFilmeDto>>> GetPagedAsync(FilmeFilterDto filmeFilterDto)
     {
-        ICollection<Filme> filmes = new List<Filme>();
+        PagedBaseResponse<Filme> filmes;
+
         if (!string.IsNullOrWhiteSpace(filmeFilterDto.Nome))
         {
             filmes = await _filmeRepository.GetByName(filmeFilterDto.Nome, filmeFilterDto.Page, filmeFilterDto.PageSize);
-        } 
+        }
         else if (!string.IsNullOrWhiteSpace(filmeFilterDto.Genero))
         {
             filmes = await _filmeRepository.GetByGender(filmeFilterDto.Genero, filmeFilterDto.Page, filmeFilterDto.PageSize);
