@@ -14,6 +14,11 @@ public class AtorRepository : IAtorRepository
         _db = db;
     }
 
+    public async Task<Ator?> CheckAtorExists(string nome)
+    {
+        return await _db.Atores.FirstOrDefaultAsync(x => x.Nome.ToLower() == nome.ToLower());
+    }
+
     public async Task<Ator> CreateAsync(Ator ator)
     {
         _db.Add(ator);
@@ -29,19 +34,16 @@ public class AtorRepository : IAtorRepository
 
     public async Task<ICollection<Ator>> GetAllAsync()
     {
-        _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).ToList();
         return await _db.Atores.ToListAsync();
     }
 
     public async Task<Ator?> GetByIdAsync(int id)
     {
-        _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).FirstOrDefault(f => f.Id == id);
-        return await _db.Atores.FirstOrDefaultAsync(x => x.Id == id);
+        return await _db.Atores.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Filme).FirstOrDefaultAsync(a => a.Id == id);
     }
 
-    public async Task<IEnumerable<Ator?>> GetByName(string nome)
+    public async Task<IEnumerable<Ator>> GetByName(string nome)
     {
-        _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).FirstOrDefault(f => f.Nome == nome);
         return await _db.Atores
         .Where(x => EF.Functions.Like(x.Nome, $"%{nome}%"))
         .ToListAsync();
