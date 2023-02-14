@@ -45,6 +45,7 @@ public class AtorRepository : IAtorRepository
     public async Task<IEnumerable<Ator>> GetByName(string nome)
     {
         return await _db.Atores
+        .Include(a => a.FilmesAtores).ThenInclude(fa => fa.Filme)
         .Where(x => EF.Functions.Like(x.Nome, $"%{nome}%"))
         .ToListAsync();
     }
