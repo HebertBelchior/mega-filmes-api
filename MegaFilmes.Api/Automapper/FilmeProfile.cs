@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MegaFilmes.Domain.Dtos;
 using MegaFilmes.Domain.Dtos.FilmeDto;
 using MegaFilmes.Domain.Entities;
 
@@ -11,5 +12,6 @@ public class FilmeProfile : Profile
 		CreateMap<CreateFilmeDto, Filme>();
 		CreateMap<UpdateFilmeDto, Filme>();
 		CreateMap<Filme, ReadFilmeDto>();
+		CreateMap<PagedBaseResponse<Filme>, PagedBaseResponse<ReadFilmeDto>>();
     }
 }

@@ -8,4 +8,5 @@ public class ReadFilmeDto
     public int Ano { get; set; }
     public string Diretor { get; set; }
     public string Genero { get; set; }
+    public double AvaliacaoMedia { get; set; }
 }

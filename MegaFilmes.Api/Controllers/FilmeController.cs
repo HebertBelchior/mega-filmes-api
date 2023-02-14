@@ -48,35 +48,10 @@ public class FilmeController : ControllerBase
         return NotFound(new { resultado.Message });
     }
 
-    [HttpGet("Search")]
-    public async Task<IActionResult> GetByFilterAsync(string? genero, string? diretor, string? nome)
-    {
-        ResultService<ICollection<ReadFilmeDto>> resultado = new();
-
-        if (!string.IsNullOrWhiteSpace(genero))
-        {
-            resultado = await _filmeService.GetByGender(genero);
-        }
-        else if (!string.IsNullOrWhiteSpace(diretor))
-        {
-            resultado = await _filmeService.GetByDirector(diretor);
-        }
-        else if (!string.IsNullOrWhiteSpace(nome))
-        {
-            resultado = await _filmeService.GetByName(nome);
-        }
-        else
-        {
-            resultado = await _filmeService.GetAllAsync();
-        }
-
-        return Ok(resultado.Data);
-    }
-
     [HttpGet]
-    public async Task<IActionResult> GetAllAsync()
+    public async Task<IActionResult> GetPagedAsync([FromQuery] FilmeFilterDto filmeFilterDto)
     {
-        var resultado = await _filmeService.GetAllAsync();
+        var resultado = await _filmeService.GetPagedAsync(filmeFilterDto);
         return Ok(resultado.Data);
     }
 
