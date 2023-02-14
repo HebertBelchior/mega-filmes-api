@@ -1,7 +1,5 @@
-﻿using MegaFilmes.Api.Services;
-using MegaFilmes.Api.Services.Interfaces;
+﻿using MegaFilmes.Api.Services.Interfaces;
 using MegaFilmes.Domain.Dtos.FilmeDto;
-using MegaFilmes.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MegaFilmes.Api.Controllers;
