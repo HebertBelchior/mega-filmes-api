@@ -32,22 +32,29 @@ public class FilmeRepository : IFilmeRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<ICollection<Filme>> GetAllAsync()
-    {
-        return await _db.Filmes.ToListAsync();
-    }
-
-    public async Task<ICollection<Filme>> GetByDirector(string diretor)
+    public async Task<ICollection<Filme>> GetAllAsync(int pageNumber, int pageSize)
     {
         return await _db.Filmes
-            .Where(x => x.Diretor.Contains(diretor))
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 
-    public async Task<ICollection<Filme>> GetByGender(string genero)
+    public async Task<ICollection<Filme>> GetByDirector(string diretor, int pageNumber, int pageSize)
+    {
+        return await _db.Filmes
+            .Where(x => x.Diretor.Contains(diretor))
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+    public async Task<ICollection<Filme>> GetByGender(string genero, int pageNumber, int pageSize)
     {
         return await _db.Filmes
             .Where(x => x.Genero == genero)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 
@@ -56,10 +63,12 @@ public class FilmeRepository : IFilmeRepository
         return await _db.Filmes.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<ICollection<Filme>> GetByName(string nome)
+    public async Task<ICollection<Filme>> GetByName(string nome, int pageNumber, int pageSize)
     {
         return await _db.Filmes
             .Where(x => x.Nome.Contains(nome))
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
             .ToListAsync();
     }
 
