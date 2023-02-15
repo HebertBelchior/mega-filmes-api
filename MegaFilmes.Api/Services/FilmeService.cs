@@ -18,23 +18,6 @@ public class FilmeService : IFilmeService
         _filmeRepository = filmeRepository;
         _mapper = mapper;
     }
-    private async Task<PagedBaseResponse<ReadFilmeDto>> GetFilmesWithAverageRatingsAsync(PagedBaseResponse<Filme> filmes)
-    {
-        var resultado = _mapper.Map<PagedBaseResponse<ReadFilmeDto>>(filmes);
-        foreach (var filme in resultado.Data)
-        {
-            try
-            {
-                var avaliacaoMedia = await _filmeRepository.GetAverageRatingsAsync(filme.Id);
-                filme.AvaliacaoMedia = avaliacaoMedia;
-            }
-            catch (Exception)
-            {
-                filme.AvaliacaoMedia = 0;
-            }
-        }
-        return resultado;
-    }
 
     public async Task<ResultService<ReadFilmeDto>> CreateAsync(CreateFilmeDto filmeDto)
     {
@@ -85,12 +68,12 @@ public class FilmeService : IFilmeService
         filme = _mapper.Map(filmeDto, filme);
         var data = await _filmeRepository.UpdateAsync(filme);
         var readFilmeDto = _mapper.Map<ReadFilmeDto>(data);
-        return ResultService.Ok<ReadFilmeDto>(readFilmeDto, 204);
+        return ResultService.Ok(readFilmeDto, 204);
     }
 
     public async Task<ResultService<PagedBaseResponse<ReadFilmeDto>>> GetPagedAsync(FilmeFilterDto filmeFilterDto)
     {
-        PagedBaseResponse<Filme> filmes;
+        PagedBaseResponse<ReadFilmeDto> filmes;
 
         if (!string.IsNullOrWhiteSpace(filmeFilterDto.Nome))
         {
@@ -100,17 +83,16 @@ public class FilmeService : IFilmeService
         {
             filmes = await _filmeRepository.GetByGender(filmeFilterDto.Genero, filmeFilterDto.Page, filmeFilterDto.PageSize);
 
-        }
+    }
         else if (!string.IsNullOrWhiteSpace(filmeFilterDto.Diretor))
         {
             filmes = await _filmeRepository.GetByDirector(filmeFilterDto.Diretor, filmeFilterDto.Page, filmeFilterDto.PageSize);
-        } 
+} 
         else
         {
             filmes = await _filmeRepository.GetAllAsync(filmeFilterDto.Page, filmeFilterDto.PageSize);
         }
 
-        var data = await GetFilmesWithAverageRatingsAsync(filmes);
-        return ResultService.Ok(data);
+        return ResultService.Ok(filmes);
     }
 }
