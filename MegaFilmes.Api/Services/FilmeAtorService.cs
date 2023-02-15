@@ -4,8 +4,6 @@ using MegaFilmes.Domain.Dtos.FilmeAtorDto;
 using MegaFilmes.Domain.Entities;
 using MegaFilmes.Domain.Interfaces.Repository;
 using MegaFilmes.Domain.Validations;
-using MegaFilmes.Infra.Repository;
-using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 
 namespace MegaFilmes.Api.Services;
 
@@ -30,7 +28,7 @@ public class FilmeAtorService : IFilmeAtorService
         if (!resultado.IsValid)
             return ResultService.RequestError<ReadFilmeAtorDto>("Informe um objeto válido", resultado);
         var errorMessage = string.Empty;
-        if (CheckIfExists(filmeAtorDto.AtorId, filmeAtorDto.FilmeId, filmeAtorDto.Papel, ref errorMessage))
+        if (CheckIfExists(filmeAtorDto.AtorId, filmeAtorDto.FilmeId, ref errorMessage))
         {
             var filmeAtor = _mapper.Map<FilmeAtor>(filmeAtorDto);
             var data = await _repository.CreateAsync(filmeAtor);
@@ -110,7 +108,7 @@ public class FilmeAtorService : IFilmeAtorService
             return ResultService.Fail<ReadFilmeAtorDto>("Ator não encontrado nesse filme");
 
         var errorMessage = string.Empty;
-        if (CheckIfExists(filmeAtorDto.AtorId, filmeAtorDto.FilmeId, filmeAtorDto.Papel, ref errorMessage))
+        if (CheckIfExists(filmeAtorDto.AtorId, filmeAtorDto.FilmeId, ref errorMessage))
         {
             filmeAtor = _mapper.Map(filmeAtorDto, filmeAtor);
             var data = await _repository.UpdateAsync(filmeAtor);
@@ -120,19 +118,19 @@ public class FilmeAtorService : IFilmeAtorService
         return ResultService.Fail<ReadFilmeAtorDto>(errorMessage, 409);
     }
 
-    private bool CheckIfExists(int atorId, int filmeId, string papel, ref string? errorMessage)
+    private bool CheckIfExists(int atorId, int filmeId, ref string? errorMessage)
     {
         var errorMessages = new List<string>();
         var ator = _atorRepository.GetByIdAsync(atorId).Result;
         var filme = _filmeRepository.GetByIdAsync(filmeId).Result;
-        var filmeAtor = _repository.CheckExists(atorId, filmeId, papel).Result;
+        var filmeAtor = _repository.CheckExists(atorId, filmeId).Result;
 
-        if (ator != null)
+        if (ator == null)
         {
             errorMessages.Add("Ator não existe");
         }
 
-        if (filme != null)
+        if (filme == null)
         {
             errorMessages.Add("Filme não existe");
         }
