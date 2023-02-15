@@ -12,6 +12,12 @@ public class GeneroService : IGeneroService
     private readonly IGeneroRepository _generoRepository;
     private readonly IMapper _mapper;
 
+    public GeneroService(IGeneroRepository generoRepository, IMapper mapper)
+    {
+        _generoRepository = generoRepository;
+        _mapper = mapper;
+    }
+
     public async Task<ResultService<ReadGeneroDto>> CreateAsync(CreateGeneroDto generoDto)
     {
         var resultado = new CreateGeneroValidation().Validate(generoDto);
