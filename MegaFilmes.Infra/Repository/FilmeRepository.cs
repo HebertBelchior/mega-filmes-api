@@ -34,31 +34,31 @@ public class FilmeRepository : IFilmeRepository
 
     public async Task<ICollection<Filme>> GetAllAsync()
     {
-        return await _db.Filmes.ToListAsync();
+        return await _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).ToListAsync();
     }
 
     public async Task<ICollection<Filme>> GetByDirector(string diretor)
     {
-        return await _db.Filmes
+        return await _db.Filmes.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Ator)
             .Where(x => x.Diretor.Contains(diretor))
             .ToListAsync();
     }
 
     public async Task<ICollection<Filme>> GetByGender(string genero)
     {
-        return await _db.Filmes
+        return await _db.Filmes.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Ator)
             .Where(x => x.Genero == genero)
             .ToListAsync();
     }
 
     public async Task<Filme?> GetByIdAsync(int id)
     {
-        return await _db.Filmes.FirstOrDefaultAsync(x => x.Id == id);
+        return await _db.Filmes.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Ator).FirstOrDefaultAsync(a => a.Id == id);
     }
 
     public async Task<ICollection<Filme>> GetByName(string nome)
     {
-        return await _db.Filmes
+        return await _db.Filmes.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Ator)
             .Where(x => x.Nome.Contains(nome))
             .ToListAsync();
     }
