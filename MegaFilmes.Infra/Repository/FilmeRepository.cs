@@ -1,4 +1,5 @@
 ﻿using MegaFilmes.Domain.Dtos;
+using MegaFilmes.Domain.Dtos.FilmeDto;
 using MegaFilmes.Domain.Entities;
 using MegaFilmes.Domain.Interfaces.Repository;
 using MegaFilmes.Infra.Context;
@@ -33,16 +34,27 @@ public class FilmeRepository : IFilmeRepository
         await _db.SaveChangesAsync();
     }
 
-    public async Task<PagedBaseResponse<Filme>> GetAllAsync(int pageNumber, int pageSize)
+    public async Task<PagedBaseResponse<ReadFilmeDto>> GetAllAsync(int pageNumber, int pageSize)
     {
         var count = await _db.Filmes.AsQueryable().CountAsync();
 
         var filmes = await _db.Filmes
+            .Include(x => x.Genero)
+            .Include(x => x.Avaliacao)
+            .Select(x => new ReadFilmeDto {
+                Id = x.Id,
+                Nome = x.Nome,
+                Descricao = x.Descricao,
+                Ano = x.Ano,
+                Diretor = x.Diretor,
+                Genero = x.Genero.Nome,
+                AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio), 1) : 0,
+             })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        return new PagedBaseResponse<Filme>
+        return new PagedBaseResponse<ReadFilmeDto>
         {
             Data = filmes,
             TotalRegisters = count,
@@ -50,16 +62,27 @@ public class FilmeRepository : IFilmeRepository
         };
     }
 
-    public async Task<PagedBaseResponse<Filme>> GetByDirector(string diretor, int pageNumber, int pageSize)
+    public async Task<PagedBaseResponse<ReadFilmeDto>> GetByDirector(string diretor, int pageNumber, int pageSize)
     {
         var count = await _db.Filmes.AsQueryable().CountAsync();
         var filmes = await _db.Filmes
+            .Include(x => x.Genero)
+            .Include(x => x.Avaliacao)
             .Where(x => x.Diretor.Contains(diretor))
+            .Select(x => new ReadFilmeDto {
+                Id = x.Id,
+                Nome = x.Nome,
+                Descricao = x.Descricao,
+                Ano = x.Ano,
+                Diretor = x.Diretor,
+                Genero = x.Genero.Nome,
+                AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio), 1) : 0,
+             })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        return new PagedBaseResponse<Filme>
+        return new PagedBaseResponse<ReadFilmeDto>
         {
             Data = filmes,
             TotalRegisters = count,
@@ -67,18 +90,29 @@ public class FilmeRepository : IFilmeRepository
         };
     }
 
-    public async Task<PagedBaseResponse<Filme>> GetByGender(string genero, int pageNumber, int pageSize)
+    public async Task<PagedBaseResponse<ReadFilmeDto>> GetByGender(string genero, int pageNumber, int pageSize)
     {
         var filmes = await _db.Filmes
-            .Where(x => x.Genero == genero)
+            .Include(x => x.Genero)
+            .Include(x => x.Avaliacao)
+            .Where(x => x.Genero.Nome.ToLower() == genero.ToLower())
+            .Select(x => new ReadFilmeDto {
+                Id = x.Id,
+                Nome = x.Nome,
+                Descricao = x.Descricao,
+                Ano = x.Ano,
+                Diretor = x.Diretor,
+                Genero = x.Genero.Nome,
+                AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio ),1) : 0,
+            })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
         var count = await _db.Filmes
-            .Where(x => x.Genero == genero).CountAsync();
+            .Where(x => x.Genero.Nome == genero).CountAsync();
 
-        return new PagedBaseResponse<Filme>
+        return new PagedBaseResponse<ReadFilmeDto>
         {
             Data = filmes,
             TotalRegisters = count,
@@ -91,16 +125,29 @@ public class FilmeRepository : IFilmeRepository
         return await _db.Filmes.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<PagedBaseResponse<Filme>> GetByName(string nome, int pageNumber, int pageSize)
+    public async Task<PagedBaseResponse<ReadFilmeDto>> GetByName(string nome, int pageNumber, int pageSize)
     {
-        var count = await _db.Filmes.AsQueryable().CountAsync();
         var filmes = await _db.Filmes
+            .Include(x => x.Genero)
+            .Include(x => x.Avaliacao)
             .Where(x => x.Nome.Contains(nome))
+            .Select(x => new ReadFilmeDto {
+                 Id = x.Id,
+                 Nome = x.Nome,
+                 Descricao = x.Descricao,
+                 Ano = x.Ano,
+                 Diretor = x.Diretor,
+                 Genero = x.Genero.Nome,
+                 AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio), 1) : 0,
+             })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
 
-        return new PagedBaseResponse<Filme>
+        var count = await _db.Filmes
+            .Where(x => x.Nome.Contains(nome)).CountAsync();
+
+        return new PagedBaseResponse<ReadFilmeDto>
         {
             Data = filmes,
             TotalRegisters = count,

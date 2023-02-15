@@ -23,7 +23,7 @@ public class CreateFilmeValidation : AbstractValidator<CreateFilmeDto>
             .NotEmpty()
             .NotNull();
 
-        RuleFor(x => x.Genero)
+        RuleFor(x => x.GeneroId)
             .NotEmpty()
             .NotNull();
     }
@@ -49,7 +49,7 @@ public class UpdateFilmeValidation : AbstractValidator<UpdateFilmeDto>
             .NotEmpty()
             .NotNull();
 
-        RuleFor(x => x.Genero)
+        RuleFor(x => x.GeneroId)
             .NotEmpty()
             .NotNull();
     }
