@@ -41,6 +41,8 @@ public class FilmeRepository : IFilmeRepository
         var filmes = await _db.Filmes
             .Include(x => x.Genero)
             .Include(x => x.Avaliacao)
+            .Include(f => f.FilmesAtores)
+            .ThenInclude(fa => fa.Ator)
             .Select(x => new ReadFilmeDto {
                 Id = x.Id,
                 Nome = x.Nome,
@@ -49,6 +51,7 @@ public class FilmeRepository : IFilmeRepository
                 Diretor = x.Diretor,
                 Genero = x.Genero.Nome,
                 AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio), 1) : 0,
+                Elenco = x.FilmesAtores.
              })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
