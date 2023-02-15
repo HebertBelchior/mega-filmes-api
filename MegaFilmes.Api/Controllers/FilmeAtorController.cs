@@ -1,8 +1,10 @@
-﻿using MegaFilmes.Api.Services.Interfaces;
+﻿using MegaFilmes.Api.Services;
+using MegaFilmes.Api.Services.Interfaces;
 using MegaFilmes.Domain.Dtos.FilmeAtorDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MegaFilmes.Api.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
 public class FilmeAtorController : ControllerBase
@@ -43,5 +45,12 @@ public class FilmeAtorController : ControllerBase
         if (resultado.Success)
             return NoContent();
         return NotFound(new { resultado.Message });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllAsync()
+    {
+        var resultado = await _filmeAtorService.GetAllAsync();
+        return Ok(resultado.Data);
     }
 }
