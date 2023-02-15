@@ -46,7 +46,7 @@ public class AtorController : ControllerBase
         return NotFound(new { resultado.Message });
     }
 
-    [HttpGet]
+    [HttpGet("{nome}")]
     public async Task<IActionResult> GetByName(string nome)
     {
         var resultado = await _AtorService.GetByName(nome);
