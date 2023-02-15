@@ -14,6 +14,11 @@ public class GeneroRepository : IGeneroRepository
         _db = db;
     }
 
+    public async Task<Genero> CheckGenderExists(string gender)
+    {
+        return await _db.Generos.FirstOrDefaultAsync(g => g.Nome == gender);
+    }
+
     public async Task<Genero> CreateAync(Genero genero)
     {
         _db.Add(genero);

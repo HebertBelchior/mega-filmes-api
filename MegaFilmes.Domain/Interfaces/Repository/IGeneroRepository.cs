@@ -6,4 +6,5 @@ public interface IGeneroRepository
 {
     Task<Genero> CreateAync(Genero filme);
     Task<ICollection<Genero>> GetAllAsync();
+    Task<Genero> CheckGenderExists(string gender);
 }
