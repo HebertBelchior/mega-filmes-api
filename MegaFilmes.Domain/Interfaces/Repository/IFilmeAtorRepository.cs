@@ -12,5 +12,5 @@ public interface IFilmeAtorRepository
     Task<FilmeAtor?> GetByFilmeId(int id);
     Task<FilmeAtor?> GetByAtorId(int id);
     Task<ICollection<FilmeAtor>> GetByPapel(string papel);
-    Task<FilmeAtor?> CheckExists(int atorId, int filmeId, string papel);
+    Task<FilmeAtor?> CheckExists(int atorId, int filmeId);
 }
