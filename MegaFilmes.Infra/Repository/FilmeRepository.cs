@@ -95,7 +95,7 @@ public class FilmeRepository : IFilmeRepository
         var filmes = await _db.Filmes
             .Include(x => x.Genero)
             .Include(x => x.Avaliacao)
-            .Where(x => x.Genero.Nome == genero)
+            .Where(x => x.Genero.Nome.ToLower() == genero.ToLower())
             .Select(x => new ReadFilmeDto {
                 Id = x.Id,
                 Nome = x.Nome,
