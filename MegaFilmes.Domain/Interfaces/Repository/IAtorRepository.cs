@@ -9,5 +9,6 @@ public interface IAtorRepository
     Task<Ator> CreateAsync(Ator ator);
     Task<Ator> UpdateAsync(Ator ator);
     Task DeleteAsync(Ator ator);
-    Task<IEnumerable<Ator?>> GetByName(string nome);
+    Task<IEnumerable<Ator>> GetByName(string nome);
+    Task<Ator?> CheckAtorExists(string nome);
 }
