@@ -20,7 +20,7 @@ public class AvaliacaoController : ControllerBase
     {
         var resultado = await _avaliacaoService.CreateAsync(avaliacaoDto);
         if (resultado.Success)
-            return Created("", resultado.Data);
+            return Created($"https://localhost:7030/api/avaliacao/{resultado.Data.Id}", resultado.Data);
         if(resultado.Status == 404)
             return NotFound(new { resultado.Message });
         return BadRequest(new { resultado.Message, resultado.Errors });

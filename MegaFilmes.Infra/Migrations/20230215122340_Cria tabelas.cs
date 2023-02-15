@@ -4,7 +4,7 @@
 
 namespace MegaFilmes.Infra.Migrations
 {
-    public partial class Cria_tabelas_iniciais : Migration
+    public partial class Criatabelas : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,6 +22,19 @@ namespace MegaFilmes.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "generos",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nome = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_generos", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "filmes",
                 columns: table => new
                 {
@@ -31,11 +44,17 @@ namespace MegaFilmes.Infra.Migrations
                     descricao = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ano = table.Column<int>(type: "int", nullable: false),
                     diretor = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    genero = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    genero_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_filmes", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_filmes_generos_genero_id",
+                        column: x => x.genero_id,
+                        principalTable: "generos",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -92,6 +111,11 @@ namespace MegaFilmes.Infra.Migrations
                 column: "filme_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_filmes_genero_id",
+                table: "filmes",
+                column: "genero_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_filmes_atores_ator_id",
                 table: "filmes_atores",
                 column: "ator_id");
@@ -115,6 +139,9 @@ namespace MegaFilmes.Infra.Migrations
 
             migrationBuilder.DropTable(
                 name: "filmes");
+
+            migrationBuilder.DropTable(
+                name: "generos");
         }
     }
 }

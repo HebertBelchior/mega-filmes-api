@@ -6,5 +6,5 @@ public class CreateFilmeDto
     public string Descricao { get; set; }
     public int Ano { get; set; }
     public string Diretor { get; set; }
-    public string Genero { get; set; }
+    public int GeneroId { get; set; }
 }

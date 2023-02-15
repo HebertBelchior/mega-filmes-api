@@ -7,7 +7,8 @@ public class Filme
     public string Descricao { get; set; }
     public int Ano { get; set; }
     public string Diretor { get; set; }
-    public string Genero { get; set; }
+    public int GeneroId { get; set; }
+    public Genero Genero { get; set; }
     public ICollection<Avaliacao> Avaliacao { get; set; }
     public ICollection<FilmeAtor> FilmesAtores { get; set; }
 }

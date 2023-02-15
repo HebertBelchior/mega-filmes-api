@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MegaFilmes.Domain.Dtos;
 using MegaFilmes.Domain.Dtos.FilmeDto;
 using MegaFilmes.Domain.Entities;
 

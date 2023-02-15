@@ -30,12 +30,14 @@ builder.Services.AddScoped<IFilmeRepository, FilmeRepository>();
 builder.Services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
 builder.Services.AddScoped<IAtorRepository, AtorRepository>();
 builder.Services.AddScoped<IFilmeAtorRepository, FilmeAtorRepository>();
+builder.Services.AddScoped<IGeneroRepository, GeneroRepository>();
 
 // Services
 builder.Services.AddScoped<IFilmeService, FilmeService>();
 builder.Services.AddScoped<IAvaliacaoService, AvaliacaoService>();
 builder.Services.AddScoped<IAtorService, AtorService>();
 builder.Services.AddScoped<IFilmeAtorService, FilmeAtorService>();
+builder.Services.AddScoped<IGeneroService, GeneroService>();
 
 // Automapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

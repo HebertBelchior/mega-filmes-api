@@ -32,8 +32,8 @@ public class FilmeMap : IEntityTypeConfiguration<Filme>
             .HasColumnName("diretor")
             .IsRequired();
 
-        builder.Property(x => x.Genero)
-            .HasColumnName("genero")
+        builder.Property(x => x.GeneroId)
+            .HasColumnName("genero_id")
             .IsRequired();
     }
 }

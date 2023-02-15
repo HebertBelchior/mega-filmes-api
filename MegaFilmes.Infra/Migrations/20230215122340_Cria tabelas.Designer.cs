@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MegaFilmes.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230210175947_Cria_tabelas_iniciais")]
-    partial class Cria_tabelas_iniciais
+    [Migration("20230215122340_Cria tabelas")]
+    partial class Criatabelas
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -94,10 +94,9 @@ namespace MegaFilmes.Infra.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("diretor");
 
-                    b.Property<string>("Genero")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("genero");
+                    b.Property<int>("GeneroId")
+                        .HasColumnType("int")
+                        .HasColumnName("genero_id");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -105,6 +104,8 @@ namespace MegaFilmes.Infra.Migrations
                         .HasColumnName("nome");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GeneroId");
 
                     b.ToTable("filmes", (string)null);
                 });
@@ -140,6 +141,25 @@ namespace MegaFilmes.Infra.Migrations
                     b.ToTable("filmes_atores", (string)null);
                 });
 
+            modelBuilder.Entity("MegaFilmes.Domain.Entities.Genero", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nome");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("generos", (string)null);
+                });
+
             modelBuilder.Entity("MegaFilmes.Domain.Entities.Avaliacao", b =>
                 {
                     b.HasOne("MegaFilmes.Domain.Entities.Filme", "Filme")
@@ -149,6 +169,17 @@ namespace MegaFilmes.Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("Filme");
+                });
+
+            modelBuilder.Entity("MegaFilmes.Domain.Entities.Filme", b =>
+                {
+                    b.HasOne("MegaFilmes.Domain.Entities.Genero", "Genero")
+                        .WithMany("Filme")
+                        .HasForeignKey("GeneroId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genero");
                 });
 
             modelBuilder.Entity("MegaFilmes.Domain.Entities.FilmeAtor", b =>
@@ -180,6 +211,11 @@ namespace MegaFilmes.Infra.Migrations
                     b.Navigation("Avaliacao");
 
                     b.Navigation("FilmesAtores");
+                });
+
+            modelBuilder.Entity("MegaFilmes.Domain.Entities.Genero", b =>
+                {
+                    b.Navigation("Filme");
                 });
 #pragma warning restore 612, 618
         }

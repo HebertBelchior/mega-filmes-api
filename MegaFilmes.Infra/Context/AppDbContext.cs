@@ -11,6 +11,7 @@ public class AppDbContext : DbContext
     public DbSet<Avaliacao> Avaliacoes { get; set; }
     public DbSet<Ator> Atores { get; set; }
     public DbSet<FilmeAtor> FilmesAtores { get; set; }
+    public DbSet<Genero> Generos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
