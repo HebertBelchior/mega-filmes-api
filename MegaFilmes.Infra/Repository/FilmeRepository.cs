@@ -42,7 +42,6 @@ public class FilmeRepository : IFilmeRepository
             .Include(x => x.Genero)
             .Include(x => x.Avaliacao)
             .Include(f => f.FilmesAtores)
-            .ThenInclude(fa => fa.Ator)
             .Select(x => new ReadFilmeDto {
                 Id = x.Id,
                 Nome = x.Nome,
@@ -51,8 +50,8 @@ public class FilmeRepository : IFilmeRepository
                 Diretor = x.Diretor,
                 Genero = x.Genero.Nome,
                 AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio), 1) : 0,
-                Elenco = x.FilmesAtores.
-             })
+                Elenco = x.FilmesAtores.Select(y => new ElencoDto { Ator = y.Ator.Nome, Papel = y.Papel }).ToList()
+            })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -63,7 +62,6 @@ public class FilmeRepository : IFilmeRepository
             TotalRegisters = count,
             TotalPages = (int)Math.Ceiling((double)count / pageSize)
         };
-        return await _db.Filmes.Include(f => f.FilmesAtores).ThenInclude(fa => fa.Ator).ToListAsync();
     }
 
     public async Task<PagedBaseResponse<ReadFilmeDto>> GetByDirector(string diretor, int pageNumber, int pageSize)
@@ -72,7 +70,6 @@ public class FilmeRepository : IFilmeRepository
         var filmes = await _db.Filmes
             .Include(x => x.Genero)
             .Include(x => x.Avaliacao)
-        return await _db.Filmes.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Ator)
             .Where(x => x.Diretor.Contains(diretor))
             .Select(x => new ReadFilmeDto {
                 Id = x.Id,
@@ -82,7 +79,8 @@ public class FilmeRepository : IFilmeRepository
                 Diretor = x.Diretor,
                 Genero = x.Genero.Nome,
                 AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio), 1) : 0,
-             })
+                Elenco = x.FilmesAtores.Select(y => new ElencoDto { Ator = y.Ator.Nome, Papel = y.Papel }).ToList()
+            })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
@@ -109,10 +107,10 @@ public class FilmeRepository : IFilmeRepository
                 Diretor = x.Diretor,
                 Genero = x.Genero.Nome,
                 AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio ),1) : 0,
+                Elenco = x.FilmesAtores.Select(y => new ElencoDto { Ator = y.Ator.Nome, Papel = y.Papel }).ToList()
             })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-        return await _db.Filmes.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Ator)
             .Where(x => x.Genero == genero)
             .ToListAsync();
 
@@ -137,7 +135,6 @@ public class FilmeRepository : IFilmeRepository
         var filmes = await _db.Filmes
             .Include(x => x.Genero)
             .Include(x => x.Avaliacao)
-        return await _db.Filmes.Include(a => a.FilmesAtores).ThenInclude(fa => fa.Ator)
             .Where(x => x.Nome.Contains(nome))
             .Select(x => new ReadFilmeDto {
                  Id = x.Id,
@@ -147,7 +144,8 @@ public class FilmeRepository : IFilmeRepository
                  Diretor = x.Diretor,
                  Genero = x.Genero.Nome,
                  AvaliacaoMedia = x.Avaliacao.Count() > 0 ? Math.Round(x.Avaliacao.Average(a => a.Criterio), 1) : 0,
-             })
+                 Elenco = x.FilmesAtores.Select(y => new ElencoDto { Ator = y.Ator.Nome, Papel = y.Papel }).ToList()
+            })
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
