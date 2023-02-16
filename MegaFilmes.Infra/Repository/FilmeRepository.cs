@@ -66,7 +66,6 @@ public class FilmeRepository : IFilmeRepository
 
     public async Task<PagedBaseResponse<ReadFilmeDto>> GetByDirector(string diretor, int pageNumber, int pageSize)
     {
-        var count = await _db.Filmes.AsQueryable().CountAsync();
         var filmes = await _db.Filmes
             .Include(x => x.Genero)
             .Include(x => x.Avaliacao)
@@ -84,6 +83,9 @@ public class FilmeRepository : IFilmeRepository
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
+
+        var count = await _db.Filmes
+            .Where(x => x.Diretor.Contains(diretor)).CountAsync();
 
         return new PagedBaseResponse<ReadFilmeDto>
         {
@@ -174,8 +176,8 @@ public class FilmeRepository : IFilmeRepository
             .Include(f => f.Avaliacao)
             .SingleOrDefaultAsync(f => f.Id == id);
 
-        var media = filme.Avaliacao.Average(a => a.Criterio);
+        var media = filme.Avaliacao.Count() > 0 ? Math.Round(filme.Avaliacao.Average(a => a.Criterio), 1) : 0;
 
-        return Math.Round(media, 1);
+        return media;
     }
 }

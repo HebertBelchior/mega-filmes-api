@@ -44,6 +44,15 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
+// Insere no banco automaticamente
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    context.Database.Migrate(); // Rode o update database
+    SeedData.Initialize(context); // Faz o seed de dados
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
