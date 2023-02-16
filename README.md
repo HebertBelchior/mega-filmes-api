@@ -39,10 +39,6 @@ Entre na pasta do projeto e execute o comando:
 ```bash
   docker-compose up -d
 ```
-Suba as tabelas para o banco de dados:
-```bash
-  Update-Database ou dotnet ef database update
-```
 Rode a aplicação
 ```bash
   dotnet ef run
