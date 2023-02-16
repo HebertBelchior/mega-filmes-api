@@ -8,10 +8,10 @@ API construída para gerenciar uma página de filmes, onde é possível criar um
 ![App Screenshot](https://github.com/saulomagalhaes/mega-filmes/blob/main/images/swagger1.jpg)
 
 
-## Autor
+## Autores
 
 - [@saulomagalhaes](https://www.linkedin.com/in/sauloam/)
-
+- [@HebertBelchior](https://www.linkedin.com/in/hebert-belchior/)
 
 ## Stack utilizada
 
